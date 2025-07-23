@@ -16,7 +16,13 @@
         </section>
         <section class="dial-speedo">
             <svg class="rpm-arc" viewBox="0 0 200 200">
-                <path id="rpmPath" d="" stroke="#FFFFFFD0" stroke-width="10" fill="none" stroke-linecap="butt" />
+                <defs>
+                    <linearGradient id="rpmGradient" x1="100%" y1="100%" x2="100%" y2="40%" gradientTransform="rotate(0)">
+                        <stop offset="30%" style="stop-color:#ff1515;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path id="rpmPath" d="" stroke="url(#rpmGradient)" stroke-width="10" fill="none" stroke-linecap="butt" />
                 <path id="rpmRedline" d="" stroke="red" stroke-opacity="0.35" stroke-width="25" fill="none"
                     stroke-linecap="butt" />
                 <path id="rpmTip" d="" stroke="red" stroke-width="30" fill="none" stroke-linecap="butt" />
@@ -65,7 +71,8 @@
               https://live.powerhitz.com/1power?esPlayer&cb=124251.mp3-->
 
             <audio id="radioAudio" src="https://s7.alhastream.com/radio/8350/live" preload="none"></audio>
-            <audio id="engineSound" src="./audio/Ohayo Onii-chan SFX by DBOSS Project.mp3" preload="none"></audio>
+            <audio id="engineSound" src="./audio/untitled.mp3" preload="none"></audio>
+            <audio id="seatbeltAlert" src="./audio/Seatbelt_Warning.mp3" preload="none" loop></audio>
 
             <!-- Tombol play -->
             <button id="playRadio" class="radio-btn">

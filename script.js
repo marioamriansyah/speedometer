@@ -5,6 +5,8 @@ let turnSignalBlinkInterval = null;
 let blinkVisible = true;
 let leftBlinkInterval = null, rightBlinkInterval = null;
 let leftBlinkOn = false, rightBlinkOn = false;
+let seatbeltBlinkInterval = null;
+let seatbeltAlertActive = false;
 let indicators = 0, headlightState = 0, seatbeltState = 0;
 let engineAudio; // Declare engineAudio variable
 let engineOn = false;
@@ -62,11 +64,57 @@ function setHeadlights(state) {
 
 function setSeatbelts(state) {
     const seatbelt = document.getElementById('seatbelts');
-    seatbelt.src = state ? 'img/seatbelt-on.png' : 'img/seatbelt-off.png';
+    seatbeltState = state;
+    if (state) {
+        seatbeltAlertActive = false;
+        if (seatbeltBlinkInterval) {
+            clearInterval(seatbeltBlinkInterval);
+            seatbeltBlinkInterval = null;
+        }
+        seatbelt.src = 'img/seatbelt-on.png';
+        const seatbeltAlert = document.getElementById('seatbeltAlert');
+        seatbeltAlert.pause();
+        seatbeltAlert.currentTime = 0;
+    } else {
+        checkSeatbeltAlert();
+    }
 }
 
 function setSpeed(speedValue) {
     elements.speedValue.innerText = `${Math.round(speedValue * 2.236936)}`;
+    checkSeatbeltAlert();
+}
+function checkSeatbeltAlert() {
+    const speed = parseInt(elements.speedValue.innerText, 10);
+    const seatbeltAlert = document.getElementById('seatbeltAlert');
+    const seatbelt = document.getElementById('seatbelts');
+    let isBlinking = false;
+
+    if (speed > 30 && !seatbeltState) {
+        seatbeltAlertActive = true;
+    }
+
+    if (speed === 0) {
+        seatbeltAlertActive = false;
+    }
+
+    if (seatbeltAlertActive) {
+        if (!seatbeltBlinkInterval) {
+            seatbeltAlert.play();
+            seatbeltBlinkInterval = setInterval(() => {
+                seatbelt.src = isBlinking ? 'img/seatbelt-off.png' : 'img/seatbelt-alert.png';
+                isBlinking = !isBlinking;
+            }, 500);
+        }
+    } else {
+        if (seatbeltBlinkInterval) {
+            clearInterval(seatbeltBlinkInterval);
+            seatbeltBlinkInterval = null;
+        }
+        seatbelt.src = seatbeltState ? 'img/seatbelt-on.png' : 'img/seatbelt-off.png';
+        seatbeltAlert.pause();
+        seatbeltAlert.currentTime = 0;
+    }
 }
 
 function setGear(gearValue) {
@@ -211,7 +259,7 @@ function describeArc(x, y, radius, startAngle, endAngle) {
 
 function createTicks() {
     const ticksContainer = document.querySelector('.ticks');
-    const tickCount = 10;
+    const tickCount = 30;
 
     for (let i = 0; i < tickCount; i++) {
         const tick = document.createElement('div');
@@ -312,12 +360,12 @@ document.addEventListener("DOMContentLoaded", () => {
     //         const randomright = Math.random() > 0.5;
     //         const randomseat = Math.random() > 0.5;
 
-    //         setSeatbelts(randomseat);
+    //         setSeatbelts(false); // Seatbelt off
     //         setLeftIndicator(randomleft); // blinking ON
     //         setRightIndicator(randomright); // blinking ON
     //         setEngineHealth(1);
     //         setfuelHealth(1);
-    //         setSpeed(randomSpeed);
+    //         setSpeed(20); // Speed > 0
     //         setGear(randomGear);
     //         setRPM(randomRPM);
     //         setEngine(engineOn);
