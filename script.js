@@ -6,24 +6,42 @@ let blinkVisible = true;
 let leftBlinkInterval = null, rightBlinkInterval = null;
 let leftBlinkOn = false, rightBlinkOn = false;
 let indicators = 0, headlightState = 0, seatbeltState = 0;
+let engineAudio; // Declare engineAudio variable
+let engineOn = false;
 
 function setEngine(state) {
     const button = document.getElementById('engineButton');
     const indicator = document.getElementById('engineIndicator');
+    const dialSpeedo = document.querySelector('.dial-speedo'); // Get the dial-speedo element
 
     if (state) {
         button.classList.add('pressed', 'on');
-        const white = 'white';
-        indicator.style.backgroundColor = white;
-        indicator.style.boxShadow = '0 0 6px white';
-        button.style.borderColor = white;
+        const red = '#e43131';
+        indicator.style.backgroundColor = red;
+        indicator.style.boxShadow = '0 0 6px #e43131';
+        button.style.borderColor = red;
+        if (engineAudio && !engineOn) {
+            engineAudio.loop = false; // Ensure the sound does not loop
+            engineAudio.play();
+        }
+        if (dialSpeedo) {
+            dialSpeedo.classList.add('engine-on-background');
+        }
     } else {
         button.classList.remove('pressed', 'on');
-        const black = 'black';
-        indicator.style.backgroundColor = black;
-        indicator.style.boxShadow = '0 0 6px black';
-        button.style.borderColor = black;
+        const red = '#e43131';
+        indicator.style.backgroundColor = red;
+        indicator.style.boxShadow = '0 0 6px #e43131';
+        button.style.borderColor = red;
+        if (engineAudio) {
+            engineAudio.pause();
+            engineAudio.currentTime = 0; // Reset sound to beginning
+        }
+        if (dialSpeedo) {
+            dialSpeedo.classList.remove('engine-on-background');
+        }
     }
+    engineOn = state;
 }
 
 function setHeadlights(state) {
@@ -254,8 +272,10 @@ document.addEventListener("DOMContentLoaded", () => {
         fuelHealth: document.getElementById('fuel'),
         engineHealth: document.getElementById('engine'),
         leftIndicator: document.getElementById('leftIndicator'),
-        rightIndicator: document.getElementById('rightIndicator')
+        rightIndicator: document.getElementById('rightIndicator'),
+        dialSpeedo: document.querySelector('.dial-speedo') // Add dialSpeedo to elements
     };
+    engineAudio = document.getElementById('engineSound'); // Initialize engineAudio
     const redlineStart = 7.5 / 9;  // tick 8 out of 9 (normalized)
     const redlineEnd = 9 / 9;    // tick 9
     const fuelBgStart = 150;

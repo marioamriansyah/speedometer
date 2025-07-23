@@ -37,11 +37,20 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: url("https://i.pinimg.com/originals/c2/ce/d2/c2ced2b7a89801a40188afefd30e1fd8.gif") center / cover;
-  opacity: 0.9;
+  background: rgb(0, 0, 0);
+  /*Defaultbackgroundwhenengineisoff*/opacity: 0.9;
   position: absolute;
   border: 5px solid rgba(0, 0, 0, 0.541);
-  /* transparent border */
+  /*transparentborder*/transition: background 0.3s ease;
+   /* Smooth transition for background change */
+  -webkit-transition: background 0.3s ease;
+  -moz-transition: background 0.3s ease;
+  -ms-transition: background 0.3s ease;
+  -o-transition: background 0.3s ease;
+}
+
+.dial-speedo.engine-on-background {
+  background: url("https://i.pinimg.com/originals/3b/d3/6f/3bd36fe648f68a8c8741cb7275ddf26a.gif") center / cover;
 }
 
 .seatbelt-icon {
@@ -53,7 +62,6 @@ body {
   rotate: -5deg;
   z-index: 6;
   transition: filter 0.3s ease;
-  filter: drop-shadow(0 0 1.5px rgb(255, 255, 255));
 }
 
 .fuel-icon {
@@ -306,7 +314,7 @@ body {
   right: -4px;
   bottom: -4px;
   border-radius: 50%;
-  background-color: #474747;
+  background-color: #e43131;
 }
 
 .engine-button-container {
@@ -318,15 +326,15 @@ body {
 }
 
 .engine-button {
-  --engine-color: rgb(44, 44, 44);
+  --engine-color: #e43131;
   width: 45px;
   height: 45px;
   position: relative;
-  background: radial-gradient(circle at 30% 30%, #5e5e5e, #2c2c2c);
+  background: radial-gradient(circle at 30% 30%, #8b1e1e, #941919);
   border-radius: 50%;
   border: 2px solid var(--engine-color);
   display: flex;
-  box-shadow: inset 0 0 3px 3px #2c2c2c;
+  box-shadow: inset 0 0 3px 3px #7a2f2f;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
@@ -334,15 +342,15 @@ body {
 }
 
 .engine-button.pressed {
-  background: radial-gradient(circle at 30% 30%, #3a3a3a, #1e1e1e);
+  background: radial-gradient(circle at 30% 30%, #e43131, #e43131);
   border-radius: 50%;
   box-shadow:
-    inset 0 3px 6px rgba(0, 0, 0, 0.7),
-    0 1px 2px rgba(255, 255, 255, 0.1);
+    inset 0 3px 6px rgba(19, 4, 4, 0.7),
+    0 1px 2px rgba(156, 37, 37, 0.1);
   transform: translateY(0.1px);
 }
 
-.engine-indicator {
+/* .engine-indicator {
   position: absolute;
   width: 13px;
   height: 5px;
@@ -351,7 +359,7 @@ body {
   background-color: var(--engine-color);
   box-shadow: 0 0 6px var(--engine-color);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
+} */
 
 .engine-label {
   position: absolute;
@@ -359,7 +367,7 @@ body {
   font-size: 6.5px;
   font-family: "Bebas Neue bold", sans-serif;
   text-align: center;
-  top: 59%;
+  top: 53%;
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
