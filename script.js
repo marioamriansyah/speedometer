@@ -5,6 +5,7 @@ let turnSignalBlinkInterval = null;
 let blinkVisible = true;
 let leftBlinkInterval = null, rightBlinkInterval = null;
 let leftBlinkOn = false, rightBlinkOn = false;
+let signalSound = null;
 let seatbeltBlinkInterval = null;
 let seatbeltAlertActive = false;
 let indicators = 0, headlightState = 0, seatbeltState = 0;
@@ -184,6 +185,7 @@ function startLeftBlinking() {
     leftBlinkInterval = setInterval(() => {
         leftBlinkOn = !leftBlinkOn;
         document.getElementById("leftIndicator").src = leftBlinkOn ? "img/leftsignal-on.png" : "img/leftsignal-off.png";
+        checkSignalSound();
     }, 400);
 }
 
@@ -192,6 +194,7 @@ function stopLeftBlinking() {
     leftBlinkInterval = null;
     leftBlinkOn = false;
     document.getElementById("leftIndicator").src = "img/leftsignal-off.png";
+    checkSignalSound();
 }
 
 function startRightBlinking() {
@@ -200,6 +203,7 @@ function startRightBlinking() {
     rightBlinkInterval = setInterval(() => {
         rightBlinkOn = !rightBlinkOn;
         document.getElementById("rightIndicator").src = rightBlinkOn ? "img/rightsignal-on.png" : "img/rightsignal-off.png";
+        checkSignalSound();
     }, 400);
 }
 
@@ -208,6 +212,19 @@ function stopRightBlinking() {
     rightBlinkInterval = null;
     rightBlinkOn = false;
     document.getElementById("rightIndicator").src = "img/rightsignal-off.png";
+    checkSignalSound();
+}
+
+function checkSignalSound() {
+    const signalSound = document.getElementById('signalSound');
+    if ((leftBlinkInterval || rightBlinkInterval) && (leftBlinkOn || rightBlinkOn)) {
+        if (signalSound.paused) {
+            signalSound.play();
+        }
+    } else {
+        signalSound.pause();
+        signalSound.currentTime = 0;
+    }
 }
 
 
